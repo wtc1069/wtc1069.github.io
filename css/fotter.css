@@ -26,13 +26,31 @@
     align-items: center;
     justify-content: center;
     margin: 1rem;
-    background-color: #363636e2;
+    background-color: #363636e2; /* 默认的深灰色背景 */
     border-radius: 3rem;
+    transition: all .25s; /* 确保背景色变化有过渡效果 */
+}
+
+/* 新增或修改：悬停时只改变背景色 */
+.avatar-link:hover {
+    background-color: #49b1f5 !important; /* 鼠标放上时变成更浅的灰色 */
+}
+
+/* 非常重要：确保图标本身的颜色在悬停时保持不变 */
+.avatar-link:hover i {
+    color: #fff !important;
 }
 
 #footer-avatar-left, #footer-avatar-right {
     display: flex;
 }
+
+.avatar-link i {
+   font-size: 1.25rem;
+   color: #fff !important;
+   }
+
+
 
 
 /* 计时器专用样式 */
@@ -84,3 +102,4 @@
   opacity: 1;
   transform: translateY(-2px);
 }
+
