@@ -1,0 +1,86 @@
+#footer-icon {
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
+    align-items: center;
+    margin: auto;
+    max-width: 1200px;
+    width: 97%;
+}
+
+#footer-avatar {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin: 0 1rem;
+    cursor: pointer;
+    transition: all .25s;
+}
+
+.avatar-link {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+    background-color: #363636e2;
+    border-radius: 3rem;
+}
+
+#footer-avatar-left, #footer-avatar-right {
+    display: flex;
+}
+
+
+/* 计时器专用样式 */
+.footer-content {
+  text-align: center;
+  width: 100%;
+}
+
+#runtime {
+  width: fit-content;
+  color: #fff;
+  padding: 0 10px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 10rem;
+  margin: 0 5px;
+  display: inline-block;
+  font-family: inherit;
+  font-weight: normal;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+}
+
+/* 暗黑模式适配 */
+[data-theme="dark"] #runtime {
+  color: #28b4c8;
+  box-shadow: 0 0 5px rgba(28, 69, 218, 0.71);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 计时器内部文字继承字体 */
+#timeDate,
+#times {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+
+/* 底部徽章区域样式 */
+#footer-badge {
+  text-align: center;
+  margin: 14px 0;
+}
+#footer-badge img {
+  transition: opacity 0.3s ease;
+  opacity: 0.8;
+}
+#footer-badge img:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
