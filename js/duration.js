@@ -23,7 +23,7 @@
       snum = "0" + snum;
     }
     /** 字样根据需要调整 **/
-    document.getElementById("timeDate").innerHTML = "自 2025-12-20 建站以来，小站已苟活"+dnum+"&nbsp天";
+    document.getElementById("timeDate").innerHTML = "小站已苟活"+dnum+"&nbsp天";
     document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒 ( =•ω•= )m";
   }
 
