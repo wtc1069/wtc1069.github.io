@@ -52,6 +52,44 @@
 
 
 
+/* 手机端响应式布局 */
+@media screen and (max-width: 768px) {
+  /* 1. 将主容器改为垂直排列 */
+  #footer-icon {
+    flex-direction: column;
+  }
+
+  /* 2. 调整左右容器顺序 */
+  #footer-avatar-left {
+    order: 1; /* 放在最上面 */
+  }
+  
+  #footer-avatar {
+    order: 2; /* 中间顺序，但下一步会隐藏 */
+    display: none !important; /* 3. 隐藏中间头像 */
+  }
+  
+  #footer-avatar-right {
+    order: 3; /* 放在最下面 */
+  }
+
+  /* 4. (可选) 调整左右容器内部图标的间距，使布局更紧凑 */
+  #footer-avatar-left,
+  #footer-avatar-right {
+    justify-content: center;
+    margin: 0.5rem 0; /* 减小上下外边距 */
+  }
+  
+  .avatar-link {
+    margin: 0.5rem; /* 减小单个图标的边距 */
+  }
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 /* 计时器专用样式 */
 .footer-content {

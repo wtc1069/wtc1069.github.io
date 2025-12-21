@@ -1,1 +1,64 @@
 #footer { background: transparent !important; }
+
+
+/* ==================== 瀑布流布局专属规则 ==================== */
+/* 以下所有样式，仅当 index_layout 为 6 或 7（容器有 .masonry 类）时生效 */
+/* 对于布局 1-5，这些规则将完全不起作用 */
+
+/* 1. 调整瀑布流卡片的圆角、阴影和间距 */
+#recent-posts.masonry .recent-post-item {
+    border-radius: 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    width: calc(50% - 12px) !important;
+    margin: 6px !important; /* 使用网格间距，覆盖通用边距 */
+}
+
+/* 2. 调整瀑布流卡片的封面图缩放效果 */
+#recent-posts.masonry .recent-post-item:hover .post-bg {
+    transform: scale(1.05) !important;
+    transition-duration: 0.6s !important;
+}
+
+/* 3. 调整瀑布流封面图高度 */
+#recent-posts.masonry .post_cover {
+    height: 200px !important;
+}
+
+/* 4. 隐藏瀑布流布局的文章摘要 */
+#recent-posts.masonry .recent-post-item > .recent-post-info > .content {
+    display: none !important;
+}
+
+/* 5. 小屏幕下，瀑布流改为单列 */
+@media screen and (max-width: 900px) {
+    #recent-posts.masonry .recent-post-item {
+        width: 100% !important;
+        /* 添加左右外边距，为屏幕边缘创造间隙 */
+        margin-left: 1.5px !important;
+        margin-right: 1.5px !important;
+        /* 同时调整计算宽度，防止溢出 */
+        width: calc(100% - 3px) !important; /* 100% 减去左右外边距总和 */
+    }
+}
+
+/* ==================== 宽屏下侧边栏卡片与文章列表顶部对齐 ==================== */
+@media screen and (min-width: 900px) {
+    /* 1. 调整侧边栏卡片容器，确保其高度由内容撑开并消除顶部间隙 */
+    .card-widget.card-info {
+        margin-top: 0 !important; /* 移除可能存在的上边距 */
+        padding-top: 0 !important; /* 移除可能存在的上内边距 */
+        align-self: flex-start; /* 关键：在Flex布局中与顶部对齐 */
+        position: sticky; /* 可选：添加粘性定位，滚动时跟随 */
+        top: 6px; /* 粘性定位的顶部距离 */
+    }
+
+    /* 2. (可选) 微调头像与信息区域，使卡片内部布局更紧凑 */
+    .card-info .avatar-img {
+        margin-top: 0;
+    }
+    .card-info .author-info-name {
+        margin-top: 10px; /* 可根据喜好调整 */
+    }
+}
+
+/* ==================== 瀑布流布局专属规则 ==================== */
