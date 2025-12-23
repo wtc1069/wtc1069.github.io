@@ -47,7 +47,7 @@
 /* ---- 2. 容器布局 ---- */
 .error-page-container {
   display: flex; flex-direction: column; align-items: center;
-  width: 100%; min-height: 80vh; margin-top: -30px !important; 
+  width: 100%; min-height: 80vh; margin-top: 10px !important; 
   box-sizing: border-box; padding: 0 20px;
 }
 
@@ -70,16 +70,16 @@
 
 .error-page-container .error-card-content {
   display: flex; flex-direction: row; align-items: center; justify-content: space-between;
-  width: 100%; height: 100%; padding: 0 40px;
+  width: 100%; height: 100%; padding: 0 0px;
   gap: 0; /* 桌面端间距由 space-between 控制 */
 }
 
 /* 图片 */
 .error-page-container .error-img {
-  flex: 1; height: 80%;
+  flex: 1; height: 90%;
   background-size: contain; background-repeat: no-repeat; background-position: center;
-  margin-right: 20px;
-  width: auto;
+
+  width: 600px;
 }
 /* 文字 */
 .error-page-container .error-info {
@@ -123,7 +123,7 @@
 /* ==========================================================================
    ★★★ 手机端适配 (变形触发区) ★★★
    ========================================================================== */
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 650px) {
   
   /* 1. 宽度变形：从 800px 变到 100% (边缘留 5px) */
   .type-404 #page { width: 100vw !important; padding: 0 !important; }
@@ -139,9 +139,9 @@
 
   /* 4. 图片变形：宽度变大，高度变大 */
   .error-page-container .error-img {
-    width: 90% !important; 
+    width: 100% !important; 
     height: auto !important; min-height: 220px !important;
-    flex: none !important; margin: 0 0 10px 0 !important;
+    flex: none !important; margin: 0 0 0 0 !important;
   }
 
   /* 5. 字体变形：平滑缩小 */
