@@ -30,7 +30,7 @@
 }
 
 /* 5. 小屏幕下，瀑布流改为单列 */
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 901px) {
     #recent-posts.masonry .recent-post-item {
         width: 100% !important;
         /* 添加左右外边距，为屏幕边缘创造间隙 */
