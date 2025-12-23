@@ -1,0 +1,160 @@
+/* ==========================================================================
+   404 页面 - V18.0 纯净过渡版 (只保留横竖屏切换动画)
+   ========================================================================== */
+
+/* ---- 0. 全局变量 & 动画曲线 ---- */
+:root {
+  --error-page-width: 800px;
+  --error-card-radius: 12px;
+  /* ★ 核心：Q弹的过渡曲线 (类似果冻变形) ★ */
+  /* 当屏幕旋转时，元素会有一种更有物理质感的伸缩效果 */
+  --morph-curve: cubic-bezier(0.34, 1.3, 0.64, 1); 
+}
+
+/* ★★★ 核心：给所有会变形的元素加上过渡 ★★★ */
+.error-page-container,
+.error-page-container .error-main-card,
+.error-page-container .error-card-content,
+.error-page-container .error-img,
+.error-page-container .error-info,
+.error-page-container .error_title,
+.error-page-container .error_subtitle,
+.error-page-container .button--animated,
+.error-page-container .aside-list,
+.error-page-container .aside-list-group,
+.error-page-container .aside-list-item,
+.error-page-container .aside-list-item .thumbnail,
+.error-page-container .aside-list-item .content,
+.error-page-container .aside-list-item .content .title {
+  /* 0.6秒完成变形，使用 Q 弹曲线 */
+  transition: all 0.6s var(--morph-curve) !important;
+}
+
+
+/* ---- 1. 清除干扰 (安全隔离) ---- */
+.page.type-404 #content-inner,
+.type-404 #content-inner,
+.type-404 #page {
+  padding: 0 !important; margin: 0 !important;
+  width: 100% !important; max-width: 100% !important;
+  background: transparent !important; box-shadow: none !important; border: none !important;
+}
+.type-404 #page-header.not-top-img { margin-bottom: 0 !important; }
+.type-404 #page-header.not-top-img .title-seo,
+.type-404 #page-header.not-top-img .site-name { display: none !important; }
+
+
+/* ---- 2. 容器布局 ---- */
+.error-page-container {
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%; min-height: 80vh; margin-top: -30px !important; 
+  box-sizing: border-box; padding: 0 20px;
+}
+
+/* ---- 3. 桌面端样式 (800x360) ---- */
+.error-page-container .error-main-card, 
+.error-page-container .aside-list {
+  width: 100%; max-width: var(--error-page-width);
+  margin: 0 auto 20px auto; box-sizing: border-box;
+}
+
+/* 顶部卡片 */
+.error-page-container .error-main-card {
+  display: flex; justify-content: center; align-items: center;
+  background: #fff !important; border-radius: var(--error-card-radius);
+  box-shadow: 0 8px 16px -4px rgba(0,0,0,0.1); 
+  height: 360px; /* 桌面固定高度 */
+  padding: 0; 
+  overflow: hidden;
+}
+
+.error-page-container .error-card-content {
+  display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+  width: 100%; height: 100%; padding: 0 40px;
+  gap: 0; /* 桌面端间距由 space-between 控制 */
+}
+
+/* 图片 */
+.error-page-container .error-img {
+  flex: 1; height: 80%;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  margin-right: 20px;
+  width: auto;
+}
+/* 文字 */
+.error-page-container .error-info {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.error-page-container h1.error_title { font-size: 7rem; line-height: 1; font-weight: bold; margin: 0; opacity: 0.9; }
+.error-page-container .error_subtitle { font-size: 1.2rem; margin: 15px 0 25px; opacity: 0.6; }
+.error-page-container .button--animated { padding: 10px 40px; background: #3b70fc; color: #fff !important; border-radius: 50px; text-decoration: none; }
+
+
+/* ---- 4. 底部列表 ---- */
+.error-page-container .aside-list { padding: 0 !important; background: transparent !important; box-shadow: none !important; }
+.error-page-container .aside-list-group { 
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; 
+  padding: 0 !important; margin: 0 !important; 
+}
+
+.error-page-container .aside-list-item { 
+  display: flex; flex-direction: column; padding: 0 !important; 
+  background: transparent !important; box-shadow: none !important; width: 100%; margin: 0 !important;
+}
+
+.error-page-container .aside-list-item .thumbnail { 
+  width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #f0f0f0; 
+}
+.error-page-container .aside-list-item .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 标题 */
+.error-page-container .aside-list-item .content {
+  margin-top: 4px !important; text-align: center; padding: 0 2px;
+}
+.error-page-container .aside-list-item .content .title {
+  font-size: 1.1rem; font-weight: bold; color: #000000 !important; line-height: 1.4 !important;
+  /* 颜色过渡 */
+  transition: color 0.3s !important;
+}
+.error-page-container .aside-list-item .content .title:hover { color: #3e86f6 !important; }
+.error-page-container .aside-list-item .content time { display: none; }
+
+
+/* ==========================================================================
+   ★★★ 手机端适配 (变形触发区) ★★★
+   ========================================================================== */
+@media screen and (max-width: 1024px) {
+  
+  /* 1. 宽度变形：从 800px 变到 100% (边缘留 5px) */
+  .type-404 #page { width: 100vw !important; padding: 0 !important; }
+  .error-page-container { padding: 0 5px !important; margin-top: 10px !important; width: 100% !important; }
+  .error-page-container .error-main-card, 
+  .error-page-container .aside-list { max-width: 100% !important; width: 100% !important; }
+
+  /* 2. 高度变形：从 360px 变为自适应 */
+  .error-page-container .error-main-card { height: auto !important; padding: 30px 10px !important; }
+  
+  /* 3. 布局变形：从左右变为上下 (Gap 从 0 变为 5px) */
+  .error-page-container .error-card-content { flex-direction: column !important; gap: 5px !important; padding: 0 !important; }
+
+  /* 4. 图片变形：宽度变大，高度变大 */
+  .error-page-container .error-img {
+    width: 90% !important; 
+    height: auto !important; min-height: 220px !important;
+    flex: none !important; margin: 0 0 10px 0 !important;
+  }
+
+  /* 5. 字体变形：平滑缩小 */
+  .error-page-container h1.error_title, 
+  .error-page-container .error_title { font-size: 3.5rem !important; margin-top: 5px !important; }
+  .error-page-container .error_subtitle { font-size: 0.9rem !important; margin: 5px 0 15px !important; }
+  .error-page-container .button--animated { padding: 8px 30px !important; font-size: 0.9rem !important; }
+
+  /* 6. 列表变形：从双列变为单列 */
+  .error-page-container .aside-list-group { grid-template-columns: 1fr !important; gap: 10px !important; }
+  
+  .error-page-container .aside-list-item .content .title {
+    font-size: 0.9rem !important; 
+    line-height: 1.3 !important;
+  }
+}
