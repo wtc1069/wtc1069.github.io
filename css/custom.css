@@ -1,0 +1,50 @@
+
+
+
+/* ==================== 瀑布流布局专属规则 ==================== */
+/* 以下所有样式，仅当 index_layout 为 6 或 7（容器有 .masonry 类）时生效 */
+/* 对于布局 1-5，这些规则将完全不起作用 */
+
+/* 1. 调整瀑布流卡片的圆角、阴影和间距 */
+#recent-posts.masonry .recent-post-item {
+    border-radius: 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    width: calc(50% - 12px) !important;
+    margin: 0px !important; /* 使用网格间距，覆盖通用边距 */
+}
+
+/* 2. 调整瀑布流卡片的封面图缩放效果 */
+#recent-posts.masonry .recent-post-item:hover .post-bg {
+    transform: scale(1.05) !important;
+    transition-duration: 0.6s !important;
+}
+
+/* 3. 调整瀑布流封面图高度 */
+#recent-posts.masonry .post_cover {
+    height: 200px !important;
+}
+
+
+
+/* 5. 小屏幕下，瀑布流改为单列 */
+@media screen and (max-width: 901px) {
+    #recent-posts.masonry .recent-post-item {
+        width: 100% !important;
+        /* 添加左右外边距，为屏幕边缘创造间隙 */
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        /* 同时调整计算宽度，防止溢出 */
+        width: calc(100% - 0px) !important; /* 100% 减去左右外边距总和 */
+    }
+}
+
+
+/* ==================== 瀑布流布局专属规则 ==================== */
+
+/* 精确控制版权文字居中 */
+.footer-copyright .copyright {
+    display: block; /* 关键：将行内元素改为块级，便于居中控制 */
+    text-align: center !important;
+    width: 100%;
+    margin: 0 auto; /* 水平居中 */
+}
