@@ -1,50 +1,102 @@
-/* 修复1: 移除不存在的 .menus_item_child 选择器 */
-#nav .menus_items .menus_item a.site-page {
-  padding: 10px 15px; /* 修复：添加基础内边距 */
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* 图标和文字之间的间距 */
-  color: #333;
-  text-decoration: none;
-  transition: all 0.3s ease;
+.menus_item_child li:not(#sidebar-menus li) {
+  float: left;
+  border-radius: 6px !important;
+  -webkit-border-radius: 6px !important;
+  -moz-border-radius: 6px !important;
+  -ms-border-radius: 6px !important;
+  -o-border-radius: 6px !important;
 }
 
-/* 修复2: 添加悬停效果 */
-#nav .menus_items .menus_item a.site-page:hover {
-  color: #007bff;
-  background-color: rgba(0, 123, 255, 0.1);
-  border-radius: 8px;
+.menus_item_child:not(#sidebar-menus ul) {
+  /*
+  left:calc(-150%)!important;这是估算值，为了保持元素居中的，如果不合适可以自己调
+  改为：*/
+  left: 50%;
+  translate: -50%;
 }
 
-/* 修复3: 修复图标样式 */
-#nav .menus_items .menus_item a.site-page i {
-  font-size: 1.1em;
-  color: #4c4948;
-}
+/* ========== 导航栏居中布局方案 ========== */
 
-/* 修复4: 修复移动端菜单 */
-@media (max-width: 870px) {
-  #nav .menus_items {
-    display: none; /* 移动端默认隐藏 */
+/* 桌面端布局 */
+@media screen and (min-width: 769px) {
+  /* 导航栏容器 */
+  #nav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    position: relative !important;
   }
-  #nav.show .menus_items {
-    display: block; /* 点击后显示 */
+
+  /* 中间菜单容器 */
+  #nav #menus {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* 右侧按钮容器 */
+  #nav #nav-right {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    z-index: 2 !important;
+  }
+
+  /* 右侧按钮样式 */
+  #nav #nav-right .site-page {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 50% !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.3s ease !important;
+    color: var(--font-color) !important;
+    text-decoration: none !important;
+  }
+
+  #nav #nav-right .site-page:hover {
+    background: rgba(0, 0, 0, 0.15) !important;
+    color: var(--theme-color) !important;
+    transform: translateY(-2px) !important;
+  }
+
+  #nav #nav-right .site-page i {
+    font-size: 1.2rem !important;
   }
 }
 
-/* 修复5: 修复导航栏居中 */
-#nav-right {
-  flex: 1;
-  justify-content: flex-end;
-  margin-left: auto;
-  display: flex;
-  flex-wrap: nowrap;
-}
+/* 手机端布局 */
+@media screen and (max-width: 768px) {
+  #nav {
+    padding: 0 16px !important;
+    justify-content: space-between !important;
+  }
 
-/* 修复6: 修复标题按钮 */
-#nav #page-name {
-  padding: 10px 30px;
-  position: relative;
+  /* 隐藏中间菜单 */
+  #nav #menus .menus_items {
+    display: none !important;
+  }
+
+  /* 右侧按钮容器 */
+  #nav #nav-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  /* 手机端隐藏部分按钮 */
+  #nav #nav-right #travellings,
+  #nav #nav-right #ten-years,
+  #nav #nav-right #random {
+    display: none !important;
+  }
 }
 
 /* 强制.not-top-img状态下的导航栏始终固定并显示 */
@@ -54,14 +106,6 @@
   opacity: 1 !important;
   visibility: visible !important;
   transform: none !important;
-}
-
-/* 特别处理滚动为0时的情况 */
-#page-header.not-top-img:not(.nav-fixed) #nav {
-  position: fixed !important;
-  top: 0 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
 }
 
 /* 防止导航栏被隐藏 */
@@ -76,24 +120,10 @@
   padding-top: 60px !important;
 }
 
-
-/* 禁用页面头部的动画 */
-#page-header {
-  animation: none !important;
-}
-
 /* 特别针对没有顶部图片的情况 */
 #page-header.not-top-img {
   animation: none !important;
 }
-
-/* 确保在页面加载的各个阶段都没有动画 */
-#page-header.nav-fixed,
-#page-header.nav-visible,
-#page-header.nav-fixed.fixed {
-  animation: none !important;
-}
-
 
 /* 导航栏背景透明过渡效果 */
 #page-header.not-top-img #nav {
@@ -102,11 +132,10 @@
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
-  
   /* 平滑过渡 */
   transition: background 0.4s ease,
-              backdrop-filter 0.4s ease,
-              box-shadow 0.4s ease !important;
+    backdrop-filter 0.4s ease,
+    box-shadow 0.4s ease !important;
 }
 
 /* 当滚动时（通过JS动态添加类） */
@@ -118,15 +147,63 @@
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* 文字颜色也需要过渡 */
-#page-header.not-top-img #nav a,
-#page-header.not-top-img #nav span.site-page {
-  color: var(--font-color) !important;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3) !important;
-  transition: color 0.4s ease, text-shadow 0.4s ease !important;
-}
+/* 桌面端布局 */
+@media screen and (min-width: 769px) {
+  /* ================= 1. 核心过渡设定 ================= */
+  /* 统一给标题和菜单设置 0.2s 的丝滑过渡 */
+  #nav .nav-page-title,
+  #nav #menus .menus_items {
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
+  }
 
-#page-header.not-top-img.nav-fixed #nav a,
-#page-header.not-top-img.nav-fixed #nav span.site-page {
-  text-shadow: none !important;
+  /* ================= 2. 标题基础样式 ================= */
+  #nav .nav-page-title {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    /* 默认状态（隐藏）：向上偏移 */
+    transform: translate(-50%, -150%) !important;
+    opacity: 0 !important;
+    z-index: 3 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    max-width: 400px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* 菜单默认状态：在原位 */
+  #nav #menus .menus_items {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+
+  /* ================= 3. 状态切换逻辑 ================= */
+  /* 【显示标题模式】 */
+  /* 触发条件：页面不在顶部 (nav-fixed) 且 没有 nav-visible 类 */
+  #page-header.nav-fixed:not(.nav-visible) #nav .nav-page-title {
+    transform: translate(-50%, -50%) !important; /* 标题居中 */
+    opacity: 1 !important;
+  }
+
+  #page-header.nav-fixed:not(.nav-visible) #nav #menus .menus_items {
+    transform: translateY(20px) !important; /* 菜单下沉 */
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* 【显示菜单模式】 */
+  /* 触发条件：页面不在顶部 (nav-fixed) 且 有 nav-visible 类 */
+  #page-header.nav-fixed.nav-visible #nav .nav-page-title {
+    transform: translate(-50%, -150%) !important; /* 标题飞走 */
+    opacity: 0 !important;
+  }
+
+  #page-header.nav-fixed.nav-visible #nav #menus .menus_items {
+    transform: translateY(0) !important; /* 菜单归位 */
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
 }
