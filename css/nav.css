@@ -7,13 +7,240 @@
   -o-border-radius: 6px !important;
 }
 
-.menus_item_child:not(#sidebar-menus ul) {
-  /*
-  left:calc(-150%)!important;这是估算值，为了保持元素居中的，如果不合适可以自己调
-  改为：*/
-  left: 50%;
-  translate: -50%;
+
+
+/* 移除之前单独写的 toggle-menu 样式，避免重复 */
+/* ========== 移动端侧边栏按钮样式修复 ========== */
+/* ... 已合并到上方 ... */
+#nav #menus #toggle-menu .site-page {
+   display: none; /* 逻辑上占位清除，实际样式已由上方合并规则接管 */
 }
+
+/* 修复：针对开往 (travellings) 按钮的特殊处理 */
+/* 如果开往按钮是图片或特殊结构，强制清理它的底部 */
+#nav #nav-right #travellings .site-page {
+  overflow: hidden !important; /* 确保裁剪 */
+  background-image: none !important;
+  border-bottom: none !important;
+}
+
+/* ================= 新增：导航栏滚动百分比按钮 (仿 Anzhiyu) ================= */
+#nav #nav-right #nav-totop {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* 关键修改：添加宽度和 margin 的过渡，实现“挤开/占据”的排版动画 */
+  /* 将 0.3s 改为 0.6s，让动画变慢 */
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              margin 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow: hidden !important; /* 确保宽度变小时内容不溢出 */
+  width: 38px !important; /* 默认容器宽度 (30px 按钮 + 间距) */
+}
+
+/* 默认隐藏整个按钮容器（通过 JS 控制显隐） */
+#nav #nav-right #nav-totop.hide {
+  width: 0 !important; 
+  margin: 0 !important; 
+  opacity: 0 !important;
+  transform: scale(0) !important; 
+  pointer-events: none !important;
+}
+
+#nav #nav-right #nav-totop.show {
+  width: 38px !important; 
+  margin-left: 4px !important; 
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  pointer-events: auto !important;
+}
+
+/* 特殊状态：当内部按钮变长（.long）时，容器也要相应变宽 */
+#nav #nav-right #nav-totop.long {
+  width: 78px !important; /* 70px 按钮 + 间距 */
+}
+
+/* 特殊定制该按钮的样式：深底白字 */
+#nav #nav-right #nav-totop .site-page {
+  /* ... */
+}
+#nav #nav-right #nav-totop .site-page {
+  width: 30px !important; 
+  height: 30px !important;
+  background: #4c4948 !important; 
+  color: #fff !important; 
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  border-radius: 50% !important;
+  background-image: none !important;
+  border: none !important;
+  margin: 0 4px !important; 
+  position: relative !important; /* 为了定位内部元素 */
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+/* 初始状态：只显示数字 */
+#nav-totop .scroll-percent-text {
+  display: block !important;
+  opacity: 1;
+  transition: all 0.3s ease !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 初始状态：箭头和“返回顶部”文字隐藏 */
+#nav-totop i.fa-arrow-up,
+#nav-totop .scroll-percent-text-text {
+  display: none !important;
+  opacity: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%; /* 默认就定在中间，不要动画位移 */
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease !important; /* 只过渡透明度，不过渡位置 */
+}
+
+/* 初始状态：只显示数字 */
+#nav-totop .scroll-percent-text {
+  display: block !important;
+  opacity: 1;
+  transition: opacity 0.3s ease !important; /* 只过渡透明度 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 悬停状态 */
+#nav #nav-right #nav-totop .site-page:hover {
+  background: #4C64FF !important; /* 悬停变蓝 */
+  box-shadow: 0 4px 10px rgba(76, 100, 255, 0.3) !important;
+  transform: translateY(-2px) !important; /* 整体上浮一点点 */
+}
+
+/* 悬停时：隐藏数字，显示箭头 */
+#nav #nav-right #nav-totop .site-page:hover .scroll-percent-text {
+  opacity: 0 !important;
+}
+
+/* 默认悬停显示箭头 */
+#nav #nav-right #nav-totop .site-page:hover i.fa-arrow-up {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+/* 当进度 > 90% 时 (通过 JS 添加 .long 类名)，胶囊变长显示文字 */
+#nav #nav-right #nav-totop .site-page.long {
+  width: 70px !important; /* 变长胶囊 */
+  border-radius: 50px !important;
+}
+
+/* 状态：长胶囊（>90%）时，默认显示“返回顶部”文字，隐藏数字 */
+#nav #nav-right #nav-totop .site-page.long .scroll-percent-text {
+  display: none !important; /* 隐藏数字 */
+}
+
+#nav #nav-right #nav-totop .site-page.long .scroll-percent-text-text {
+  display: block !important; /* 显示文字 */
+  opacity: 1 !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+  color: #fff !important;
+}
+
+/* 状态：长胶囊（>90%）被悬停时，隐藏文字，显示箭头 */
+#nav #nav-right #nav-totop .site-page.long:hover .scroll-percent-text-text {
+  opacity: 0 !important; /* 隐藏文字 */
+}
+
+#nav #nav-right #nav-totop .site-page.long:hover i.fa-arrow-up {
+  display: block !important; /* 显示箭头 */
+  opacity: 1 !important;
+}
+
+/* 手机端适配：如果不希望手机端显示，可以加 display: none */
+@media screen and (max-width: 768px) {
+  #nav #nav-right #nav-totop {
+    /* display: none !important; 如果需要在手机端隐藏请取消注释 */
+  }
+}
+
+/* ========== 右侧按钮全局样式 (移动端/桌面端通用) ========== */
+
+/* 右侧按钮容器 */
+#nav #nav-right {
+  display: flex !important;
+  align-items: center !important;
+  z-index: 2 !important;
+}
+
+/* 强制重置右侧所有容器的间距 */
+#nav #nav-right > div {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 统一所有图标按钮样式（包括右侧按钮和左侧汉堡菜单） */
+#nav #nav-right .site-page,
+#nav #menus #toggle-menu .site-page {
+  display: inline-flex !important;
+  align-items: center !important;   /* 垂直居中 */
+  justify-content: center !important; /* 水平居中 */
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  
+  /* 终极去下划线/边框/背景图方案 */
+  background-image: none !important; 
+  border: none !important;
+  border-bottom: none !important;
+  text-decoration: none !important;
+  
+  /* 关键：裁剪溢出，切掉所有伪元素下划线 */
+  overflow: hidden !important;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  transform: translateZ(0);
+  
+  /* 缩小一点点内部图标区域 */
+  box-sizing: border-box !important;
+  
+  transition: all 0.3s ease !important;
+  color: #4c4948 !important;
+  margin: 0 6px !important; /* 统一间距 */
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+/* 悬停效果：蓝色背景，白色图标 */
+#nav #nav-right .site-page:hover,
+#nav #menus #toggle-menu .site-page:hover {
+  background-color: #4C64FF !important;
+  background-image: none !important;
+  color: white !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 10px rgba(76, 100, 255, 0.3);
+}
+
+#nav #nav-right .site-page i,
+#nav #menus #toggle-menu .site-page i {
+  font-size: 1.1rem !important;
+  font-weight: 600;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  line-height: 1 !important;
+}
+
+/* 移除之前单独写的 toggle-menu 样式，避免重复 */
+/* ========== 移动端侧边栏按钮样式修复 ========== */
+/* ... 已合并到上方 ... */
 
 /* ========== 导航栏居中布局方案 ========== */
 
@@ -25,6 +252,13 @@
     align-items: center !important;
     justify-content: space-between !important;
     position: relative !important;
+  }
+  
+  /* 修正父级菜单项的定位上下文 */
+  #nav #menus .menus_items .menus_item {
+    position: relative !important; /* 关键：让子菜单相对于自己定位 */
+    display: inline-block !important;
+    padding: 0 5px !important; /* 调整间距 */
   }
 
   /* 中间菜单容器 */
@@ -38,37 +272,9 @@
     align-items: center !important;
   }
 
-  /* 右侧按钮容器 */
-  #nav #nav-right {
-    flex: 0 0 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 15px !important;
-    z-index: 2 !important;
-  }
-
-  /* 右侧按钮样式 */
-  #nav #nav-right .site-page {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 35px !important;
-    height: 35px !important;
-    border-radius: 50% !important;
-    background: rgba(0, 0, 0, 0.05) !important;
-    transition: all 0.3s ease !important;
-    color: var(--font-color) !important;
-    text-decoration: none !important;
-  }
-
-  #nav #nav-right .site-page:hover {
-    background: rgba(0, 0, 0, 0.15) !important;
-    color: var(--theme-color) !important;
-    transform: translateY(-2px) !important;
-  }
-
-  #nav #nav-right .site-page i {
-    font-size: 1.2rem !important;
+  /* 特定图标样式：如果有开往(travellings)按钮，通常它默认就是蓝色的 */
+  #nav #nav-right #travellings i {
+    /* 保持和其他一致，或者如果需要特殊强调可以单独设置 */
   }
 }
 
@@ -77,6 +283,56 @@
   #nav {
     padding: 0 16px !important;
     justify-content: space-between !important;
+    display: flex !important; /* 确保是 flex 布局 */
+    position: relative !important;
+  }
+  
+  /* 将汉堡菜单 (#toggle-menu) 移动到最右侧 */
+  #nav #menus {
+    display: flex !important; /* 确保 #menus 本身显示 */
+    order: 2 !important; /* 放到最右边 (比 nav-right 的 order 大) */
+    position: static !important; /* 移除绝对定位，让它参与 flex 流 */
+    transform: none !important;
+    top: auto !important;
+    left: auto !important;
+  }
+  
+  /* 将右侧功能按钮 (#nav-right) 移动到中间/左侧 (或者保持默认顺序) */
+  #nav #nav-right {
+    order: 1 !important; /* 放到汉堡菜单左边 */
+    margin-right: -6px !important; /* 负边距抵消，因为两个容器接触处各有一个 6px 的 margin */
+  }
+  
+  /* 调整汉堡菜单容器的间距，确保衔接自然 */
+  #nav #menus {
+    margin-left: -6px !important; /* 负边距抵消 */
+  }
+
+  /* 修复：手机端隐藏中间的页面标题 */
+  #nav .nav-page-title {
+    display: none !important;
+  }
+
+  /* 修复：手机端隐藏左侧自定义 Logo 中的 Home 图标 */
+  #nav #blog-info .nav-site-title i.fa-home {
+    display: none !important;
+  }
+  
+  /* 修复：手机端恢复站点名称的正常显示 */
+  #nav #blog-info .nav-site-title .site-name {
+    opacity: 1 !important;
+    transform: none !important;
+    display: inline-block !important;
+  }
+
+  /* 修复：手机端不需要胶囊背景和悬停特效 */
+  #nav #blog-info .nav-site-title,
+  #nav #blog-info .nav-site-title:hover,
+  #nav #blog-info .nav-site-title:focus {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-width: auto !important;
   }
 
   /* 隐藏中间菜单 */
@@ -88,15 +344,34 @@
   #nav #nav-right {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    /* gap: 10px !important; 已改为全局 margin 控制 */
   }
 
   /* 手机端隐藏部分按钮 */
-  #nav #nav-right #travellings,
-  #nav #nav-right #ten-years,
-  #nav #nav-right #random {
+#nav #nav-right #travellings,
+#nav #nav-right #ten-years,
+#nav #nav-right #random {
+  display: flex !important; /* 强制显示 */
+}
+
+/* 强制清除移动端汉堡菜单 (#toggle-menu) 的下划线伪元素 */
+/* 因为它是 .site-page 的一部分，但有时主题会通过 #toggle-menu a::after 再次添加 */
+#nav #menus #toggle-menu .site-page::after,
+#nav #menus #toggle-menu .site-page::before {
+  display: none !important;
+  content: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 强制清除所有可能在移动端出现的 site-page 下划线 */
+@media screen and (max-width: 768px) {
+  #nav .site-page::after,
+  #nav .site-page::before {
     display: none !important;
+    content: none !important;
   }
+}
 }
 
 /* 强制.not-top-img状态下的导航栏始终固定并显示 */
@@ -125,22 +400,28 @@
   animation: none !important;
 }
 
-/* 导航栏背景透明过渡效果 */
-#page-header.not-top-img #nav {
+/* 导航栏背景透明过渡效果 - 仅在没有 nav-fixed 类时生效 */
+#page-header.not-top-img:not(.nav-fixed) #nav {
   /* 初始状态：完全透明 */
   background: rgba(255, 255, 255, 0) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
   /* 平滑过渡 */
-  transition: background 0.4s ease,
-    backdrop-filter 0.4s ease,
-    box-shadow 0.4s ease !important;
+  transition: all 0.4s ease;
 }
 
 /* 当滚动时（通过JS动态添加类） */
 #page-header.not-top-img.nav-fixed #nav {
   /* 最终状态：白色半透明 */
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 修复刷新闪烁问题：当导航栏固定时，覆盖掉not-top-img的透明背景 */
+#page-header.nav-fixed #nav {
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
@@ -161,49 +442,486 @@
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    /* 默认状态（隐藏）：向上偏移 */
     transform: translate(-50%, -150%) !important;
     opacity: 0 !important;
     z-index: 3 !important;
+    /* 使用 Flex 布局让子元素绝对居中 */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     max-width: 400px !important;
+    height: 100% !important; /* 确保占满高度 */
     white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    cursor: pointer !important;
   }
 
-  /* 菜单默认状态：在原位 */
+  /* 让两个子元素（标题和返回顶部）绝对定位重叠 */
+  #nav .nav-page-title .site-name {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important; /* 自身绝对居中 */
+    transition: all 0.3s ease-in-out;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important; /* 确保宽度一致 */
+    text-align: center !important;
+  }
+
+  /* 默认显示标题 (第一个 span) */
+  #nav .nav-page-title .site-name:first-child {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+
+  /* 默认隐藏返回顶部 (第二个 span) */
+  #nav .nav-page-title .site-name:last-child {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9) !important;
+  }
+
+  /* Hover 时切换：隐藏标题 */
+  #nav .nav-page-title:hover .site-name:first-child {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9) !important;
+  }
+
+  /* Hover 时切换：显示返回顶部 */
+  #nav .nav-page-title:hover .site-name:last-child {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+
+  /* 菜单项样式 - 仿图例 Pill 风格 */
+#nav #menus .menus_items .menus_item .site-page {
+  display: inline-flex !important; /* 改为 Flex 布局 */
+  align-items: center !important; /* 垂直居中 */
+  justify-content: center !important; /* 水平居中 */
+  padding: 8px 18px; 
+  border-radius: 999px;
+  transition: all 0.2s ease-in-out;
+  color: #4c4948; 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Lato, Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-shadow: none !important;
+  text-decoration: none !important;
+  line-height: 1 !important; /* 消除 line-height 导致的偏移 */
+  height: 40px !important; /* 固定高度确保一致性 */
+}
+
+/* 强制移除所有菜单项（主菜单+子菜单）的伪元素下划线 */
+#page-header #nav .menus_items .menus_item .site-page::after,
+#page-header #nav .menus_items .menus_item .site-page::before,
+#page-header #nav .menus_item_child > li > a::after,
+#page-header #nav .menus_item_child > li > a::before,
+/* 额外针对图标按钮的伪元素移除 */
+#nav #nav-right .site-page::after,
+#nav #nav-right .site-page::before,
+/* 修复：移除左侧 Logo 的伪元素，防止出现直角阴影或下划线 */
+#nav #blog-info .nav-site-title::after,
+#nav #blog-info .nav-site-title::before,
+/* 修复：移除侧边栏按钮 (#toggle-menu) 的伪元素 */
+#nav #menus #toggle-menu .site-page::after,
+#nav #menus #toggle-menu .site-page::before {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 确保 Active 状态下也不显示 */
+#page-header #nav .menus_items .menus_item.active .site-page::after,
+#page-header #nav .menus_items .menus_item.active .site-page::before {
+  display: none !important;
+}
+
+/* 消除可能存在的空格影响（虽然CSS很难完美消除文本节点内的空格，但我们可以尝试调整margin来补偿） 
+   如果是" 我的"（前导空格），内容会偏右。用户反馈是偏左，这很奇怪。
+   我们先用 Flexbox 居中试试。
+*/
+
+/* 移除可能存在的伪元素下划线 */
+#nav #menus .menus_items .menus_item .site-page::after {
+  display: none !important;
+}
+
+/* Hover 状态：蓝色背景，白色文字 */
+#nav #menus .menus_items .menus_item .site-page:hover {
+  background: #4C64FF !important;
+  color: white !important;
+  box-shadow: 0 6px 14px rgba(76, 100, 255, 0.25);
+}
+
+/* 修复：当子菜单 (.menus_item_child) 显示时，保持父级菜单项 (.site-page) 的激活状态 */
+#nav #menus .menus_items .menus_item:hover .site-page {
+  background: #4C64FF !important;
+  color: white !important;
+  box-shadow: 0 6px 14px rgba(76, 100, 255, 0.25);
+}
+
+/* 移除原有的图标间距，如果有的话 - 仅针对主菜单 */
+#nav #menus .menus_items .menus_item > .site-page i {
+  display: none; /* 图例中没有图标，隐藏图标 */
+}
+
+/* ================= 子菜单样式优化 (横向胶囊风格) ================= */
+
+/* ================= 子菜单容器样式 ================= */
+#nav .menus_item_child {
+  position: absolute !important;
+  display: none !important; /* 默认隐藏 */
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: center;
+  
+  /* 视觉样式 */
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid #4C64FF !important;
+  border-radius: 50px !important;
+  padding: 8px 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  
+  /* 保持 10px 视觉间距 */
+  margin-top: 10px !important;
+  
+  /* 定位 */
+  width: auto !important;
+  min-width: max-content;
+  left: 50% !important;
+  top: 100% !important;
+  z-index: 100 !important;
+  white-space: nowrap !important;
+  
+  /* 确保动画原点在顶部中心 */
+  transform-origin: top center !important;
+}
+
+/* 移除之前的子菜单伪元素桥梁（因为它不稳定） */
+#nav .menus_item_child::before {
+  display: none !important;
+}
+
+/* 修复方案：在父级菜单项 (.menus_item) 上建立隐形桥梁 */
+/* 这样鼠标离开文字但进入间隙时，依然算作悬停在父级上，从而保持子菜单显示 */
+#nav #menus .menus_items .menus_item::after {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  bottom: -20px !important; /* 向下延伸 20px，覆盖 10px 的 margin 间隙 */
+  left: 0 !important;
+  width: 100% !important;
+  height: 20px !important;
+  background: transparent !important;
+  /* background: rgba(0,255,0,0.3) !important; /* 调试用：显示绿色区域 */
+  z-index: 10 !important;
+}
+
+/* ================= Hover 触发动画 ================= */
+#nav .menus_items .menus_item:hover .menus_item_child {
+  display: flex !important;
+  animation: sub_menus 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
+}
+
+/* ================= 动画关键帧定义 ================= */
+@keyframes sub_menus {
+  0% {
+    opacity: 0;
+    /* 初始状态：居中 + 向上位移 + 整体缩小 (从小到大) */
+    transform: translateX(-50%) translateY(-20px) scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    /* 结束状态：居中 + 归位 + 恢复正常大小 */
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+/* ... */
+
+/* 移除旧的过渡样式和冗余代码 */
+
+/* ================= 下拉菜单微调 (红框部分) ================= */
+/* 增加子菜单容器的内边距，使其更像图例中的宽胶囊 */
+#nav .menus_item_child {
+  padding: 8px 12px !important;
+  border-radius: 50px !important;
+  background-color: rgba(255, 255, 255, 0.95) !important; /* 稍微透明一点 */
+  backdrop-filter: blur(10px) !important; /* 磨砂效果 */
+}
+
+/* 调整子菜单项之间的间距 */
+#nav .menus_item_child > li {
+  margin: 0 4px !important; /* 每个项左右留点空隙 */
+}
+
+/* 调整子菜单链接样式 */
+#nav .menus_item_child > li > a {
+  padding: 6px 14px !important;
+  font-size: 14px !important;
+  color: #555 !important;
+  font-weight: 500 !important; /* 不需要特别粗 */
+}
+
+/* 调整子菜单图标颜色和间距 */
+#nav .menus_item_child > li > a > i {
+  color: #333 !important; /* 图标深色 */
+  margin-right: 6px !important;
+  font-size: 15px !important;
+}
+
+/* 2. 子菜单项 (li) */
+#nav .menus_item_child > li {
+  float: none !important;
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  width: auto !important;
+}
+
+/* 3. 子菜单链接 (a) */
+#nav .menus_item_child > li > a {
+  display: flex !important;
+  align-items: center;
+  padding: 6px 16px !important;
+  border-radius: 50px !important; /* 胶囊圆角 */
+  color: #555 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Lato, Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px !important;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 4. 子菜单链接 Hover - 仅鼠标悬停时才变色 */
+#nav .menus_item_child > li > a:hover {
+  background: #4C64FF !important;
+  color: #fff !important;
+}
+
+/* 5. 确保子菜单链接默认透明（非悬停状态） */
+#nav .menus_item_child > li > a {
+  background: transparent !important;
+  color: #555 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center;
+  padding: 6px 16px !important;
+  border-radius: 50px !important; 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Lato, Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px !important;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+/* 修复：移除可能导致子菜单全亮的继承样式 */
+/* 如果之前有代码让父级 hover 时子级也变色，这里强制覆盖回去 */
+#nav #menus .menus_items .menus_item:hover .menus_item_child > li > a {
+  background: transparent !important;
+  color: #555 !important;
+  box-shadow: none !important;
+}
+
+/* 再次强调：只有子菜单项自己被 hover 时才变色 */
+#nav #menus .menus_items .menus_item:hover .menus_item_child > li > a:hover {
+  background: #4C64FF !important;
+  color: #fff !important;
+  box-shadow: 0 4px 10px rgba(76, 100, 255, 0.3) !important;
+}
+
+/* 6. 确保 Hover 时显示 (Flex布局) - 已合并到上方，删除冗余代码 */
+
+  /* 隐藏菜单项中的下拉箭头 */
+#nav #menus .menus_items .menus_item .site-page.group > i:last-child {
+  display: none !important;
+}
   #nav #menus .menus_items {
     transform: translateY(0) !important;
     opacity: 1 !important;
   }
-
+  
   /* ================= 3. 状态切换逻辑 ================= */
-  /* 【显示标题模式】 */
-  /* 触发条件：页面不在顶部 (nav-fixed) 且 没有 nav-visible 类 */
+  
+  /* --- 场景1：页面顶部 (没有 nav-fixed) --- */
+  /* 此时背景透明，应该显示菜单，隐藏中间的标题 */
+  #page-header:not(.nav-fixed) #nav .nav-page-title {
+    opacity: 0 !important;
+    transform: translate(-50%, -150%) !important;
+    pointer-events: none !important;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out !important; /* 确保有过渡 */
+  }
+
+  #page-header:not(.nav-fixed) #nav #menus .menus_items {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out !important; /* 确保有过渡 */
+  }
+
+  /* --- 场景2：向下滚动 (有 nav-fixed，但没有 nav-visible) --- */
+  /* 此时导航栏变白，应该显示中间的标题，隐藏菜单 */
   #page-header.nav-fixed:not(.nav-visible) #nav .nav-page-title {
     transform: translate(-50%, -50%) !important; /* 标题居中 */
     opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
   }
 
   #page-header.nav-fixed:not(.nav-visible) #nav #menus .menus_items {
     transform: translateY(20px) !important; /* 菜单下沉 */
     opacity: 0 !important;
     pointer-events: none !important;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
   }
 
-  /* 【显示菜单模式】 */
-  /* 触发条件：页面不在顶部 (nav-fixed) 且 有 nav-visible 类 */
+  /* --- 场景3：向上滚动 (有 nav-fixed 且有 nav-visible) --- */
+  /* 此时显示菜单，隐藏标题 */
   #page-header.nav-fixed.nav-visible #nav .nav-page-title {
     transform: translate(-50%, -150%) !important; /* 标题飞走 */
     opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   #page-header.nav-fixed.nav-visible #nav #menus .menus_items {
     transform: translateY(0) !important; /* 菜单归位 */
     opacity: 1 !important;
     pointer-events: auto !important;
+  }
+
+  /* ================= 4. 左侧 Logo 样式 (文字 <-> 图标 切换特效) ================= */
+  
+  /* 0. 清除父级可能存在的干扰 */
+  #nav #blog-info {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* 容器：固定宽度策略 */
+  #nav #blog-info .nav-site-title {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 35px !important;
+    min-width: 80px !important; 
+    padding: 0 10px !important; 
+    border-radius: 8px !important;
+    
+    /* 1. 彻底清除背景和边框 */
+    background: transparent !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    
+    /* 2. 彻底清除默认阴影 */
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    
+    text-decoration: none !important;
+    color: #4c4948 !important;
+    
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; 
+    position: relative !important;
+    /* 保持 overflow: hidden 以防内部元素溢出，但通常这不会切掉自身的 box-shadow */
+    overflow: hidden !important; 
+    
+    /* 3. 修复 Safari/Chrome 渲染可能的圆角溢出问题 */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    transform: translateZ(0);
+  }
+
+  /* 1. 图标 (fas fa-home) */
+  #nav #blog-info .nav-site-title i.fa-home {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) scale(0.5) !important;
+    font-size: 18px !important;
+    color: white !important;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    margin: 0 !important;
+    width: auto !important;
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* 2. 站点名称/图片Logo */
+  #nav #blog-info .nav-site-title .site-name,
+  #nav #blog-info .nav-site-title .site-icon {
+    display: inline-block !important;
+    font-weight: 700 !important;
+    font-size: 1.15rem !important;
+    color: #4c4948 !important;
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  
+  #nav #blog-info .nav-site-title .site-icon {
+    height: 24px !important;
+    width: auto !important;
+    vertical-align: middle !important;
+    margin-right: 4px !important;
+  }
+
+  /* ================= Hover / Focus 交互状态 ================= */
+  
+  #nav #blog-info .nav-site-title:hover,
+  #nav #blog-info .nav-site-title:focus {
+    /* 确保背景色覆盖 */
+    background-color: #4C64FF !important; 
+    background-image: none !important;
+    border-radius: 50px !important;
+    
+    /* 重新定义阴影，确保是圆角的 */
+    box-shadow: 0 5px 15px rgba(67, 83, 246, 0.3) !important;
+    -webkit-box-shadow: 0 5px 15px rgba(67, 83, 246, 0.3) !important;
+  }
+
+  /* 再次强制清除所有可能的伪元素干扰 */
+  #nav #blog-info .nav-site-title::before,
+  #nav #blog-info .nav-site-title::after,
+  #nav #blog-info .nav-site-title:hover::before,
+  #nav #blog-info .nav-site-title:hover::after {
+    display: none !important;
+    content: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Hover 时：显示图标 */
+  #nav #blog-info .nav-site-title:hover i.fa-home {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1) !important;
+  }
+
+  /* Hover 时：文字变透明（但保留占位！） */
+  #nav #blog-info .nav-site-title:hover .site-name,
+  #nav #blog-info .nav-site-title:hover .site-icon {
+    opacity: 0;
+    transform: scale(0.9);
   }
 }
