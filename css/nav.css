@@ -35,7 +35,8 @@
               margin 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
               opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  overflow: hidden !important; /* 确保宽度变小时内容不溢出 */
+  /* 移除 overflow: hidden !important; 否则悬停上浮时会被切头 */
+  /* overflow: hidden !important; */
   width: 38px !important; /* 默认容器宽度 (30px 按钮 + 间距) */
 }
 

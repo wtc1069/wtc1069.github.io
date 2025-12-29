@@ -490,14 +490,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       isShowPercent && rightsideScrollPercent(currentTop)
-      
-      // navToTopText 逻辑已移动到 nav.js 中处理，此处移除以避免冲突
-
       checkDocumentHeight()
     }, 300)
 
     btf.addEventListenerPjax(window, 'scroll', scrollTask, { passive: true })
-    scrollTask()
   }
 
   /**
