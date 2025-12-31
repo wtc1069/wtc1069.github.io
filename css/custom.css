@@ -124,10 +124,3 @@ div#archive {
 
 /* ==================== 瀑布流布局专属规则 ==================== */
 
-/* 精确控制版权文字居中 */
-.footer-copyright .copyright {
-    display: block; /* 关键：将行内元素改为块级，便于居中控制 */
-    text-align: center !important;
-    width: 100%;
-    margin: 0 auto; /* 水平居中 */
-}

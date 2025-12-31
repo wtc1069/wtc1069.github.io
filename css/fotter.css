@@ -41,6 +41,65 @@
     color: #fff !important;
 }
 
+/* --- 新增：夜间模式下的头像链接样式 --- */
+[data-theme="dark"] .avatar-link {
+    background-color: #ffffff !important; /* 圆圈变白 */
+}
+
+[data-theme="dark"] .avatar-link i {
+    color: #000000 !important; /* 图标变黑 */
+}
+
+/* 夜间模式悬停效果：圆圈变橙黄，图标变白 */
+[data-theme="dark"] .avatar-link:hover {
+    background-color: #f2b94b !important; /* 橙黄色 */
+}
+[data-theme="dark"] .avatar-link:hover i {
+    color: #ffffff !important; /* 图标变白 */
+}
+
+/* 夜间模式下底部文字变白 */
+[data-theme="dark"] #footer-wrap,
+[data-theme="dark"] .footer-copyright,
+[data-theme="dark"] .footer-content,
+[data-theme="dark"] .copyright {
+    color: #ffffff !important;
+}
+[data-theme="dark"] #footer-wrap a,
+[data-theme="dark"] .footer-copyright a,
+[data-theme="dark"] .footer-content a,
+[data-theme="dark"] .copyright a {
+    color: #ffffff !important;
+}
+
+/* 日间模式下底部文字变深灰 */
+[data-theme="light"] #footer-wrap,
+[data-theme="light"] .footer-copyright,
+[data-theme="light"] .footer-content,
+[data-theme="light"] .copyright {
+    color: #4c4c4d !important;
+}
+[data-theme="light"] #footer-wrap a,
+[data-theme="light"] .footer-copyright a,
+[data-theme="light"] .footer-content a,
+[data-theme="light"] .copyright a {
+    color: #4c4c4d !important;
+}
+
+/* 兼容性处理：如果没有 data-theme 属性（默认情况），也应用深灰 */
+#footer-wrap,
+.footer-copyright,
+.footer-content,
+.copyright {
+    color: #4c4c4d;
+}
+#footer-wrap a,
+.footer-copyright a,
+.footer-content a,
+.copyright a {
+    color: #4c4c4d;
+}
+
 #footer-avatar-left, #footer-avatar-right {
     display: flex;
 }
@@ -86,10 +145,6 @@
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
 
 /* 计时器专用样式 */
 .footer-content {
@@ -141,3 +196,10 @@
   transform: translateY(-2px);
 }
 
+/* 精确控制版权文字居中 */
+.footer-copyright .copyright {
+    display: block; /* 关键：将行内元素改为块级，便于居中控制 */
+    text-align: center !important;
+    width: 100%;
+    margin: 0 auto; /* 水平居中 */
+}

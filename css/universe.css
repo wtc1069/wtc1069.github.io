@@ -1,6 +1,6 @@
-/* 背景宇宙星光  */
-#universe{
-  display: block;
+/* 背景宇宙星光 */
+#universe {
+  display: block; /* 默认显示，保持 JS 运行 */
   position: fixed;
   margin: 0;
   padding: 0;
@@ -11,8 +11,21 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  /* 这个是调置顶的优先级的，-1在文章页下面，背景上面，个人推荐这种 */
-  z-index: -1;
+  z-index: 1;
+}
+
+/* 日间模式下通过 opacity 隐藏，不影响 display 属性，从而保持动画状态 */
+[data-theme="light"] #universe {
+  opacity: 0;
+  visibility: hidden; /* 确保不挡住点击事件，虽然已有 pointer-events: none */
+  transition: opacity 0.5s; /* 可选：增加淡入淡出效果 */
+}
+
+/* 夜间模式下显示 */
+[data-theme="dark"] #universe {
+  opacity: 1;
+  visibility: visible;
+  display: block;
 }
 
 [data-theme="dark"] #web_bg {
